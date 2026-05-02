@@ -98,3 +98,47 @@
 {
   justify-content: space-between !important;
 }
+
+/* Dashboard Custom Cards */
+
+.custom-card{
+  border-radius:20px;
+  overflow:hidden;
+  background:white;
+  box-shadow:0 10px 20px rgba(0,0,0,0.1);
+  transition:0.3s;
+}
+
+.custom-card:hover{
+  transform:translateY(-8px);
+}
+
+.card-top{
+  height:150px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:60px;
+  color:white;
+}
+
+.card-body-custom{
+  padding:20px;
+}
+
+.card-body-custom h2{
+  font-weight:bold;
+  margin-top:10px;
+}
+
+.card-body-custom p{
+  color:gray;
+  margin-top:10px;
+}
+
+.card-footer-custom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:20px;
+}

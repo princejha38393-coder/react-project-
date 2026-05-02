@@ -1,72 +1,125 @@
-import React,{useState,useEffect} from 'react'
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
-
-function UserTable(props) {
-    const [user, updateuser] = useState([]);
+function UserTable() {
+  const [user, updateuser] = useState([]);
 
   const getdata = () => {
-    axios.get('http://localhost:8700/emp').then((d) => {
-      console.log(d.data);
-      updateuser(d.data);
-    })
-  }
+    axios
+      .get(
+        "http://localhost:8700/alluserlist",
+        {
+          withCredentials: true
+        }
+      )
+      .then((d) => {
+        console.log(d.data.data);
+        updateuser(d.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
-    getdata()
+    getdata();
   }, []);
 
-const deletedata = (a)=>{
-  axios.delete(`http://localhost:8700/emp/${a}`).then((r)=>{
-    console.log(r);
-    getdata();
-  })
-
-}
+  const deletedata = (a) => {
+    axios
+      .delete(
+        `http://localhost:8700/deleteuser/${a}`,
+        {
+          withCredentials: true
+        }
+      )
+      .then((r) => {
+        console.log(r);
+        getdata();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
-    <div class="card mb-3 shadow border">
-            <div class="card-body">
-    {props.xyz}
-    <button className="btn btn-success btn-sm" onClick={props.myaction}>msg</button>
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">sno</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">DOB</th>
-                    <th scope="col">Gender</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Mobile</th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {user.map((u)=>{
-                    return(
-                      <tr>
-                    <th scope="row">{u.id}</th>
-                    <td>{u.emailid}</td>
-                    <td>{u.dob}</td>
-                    <td>{u.gender}</td>
-                    <td>{u.username}</td>
-                    <td>{u.mobileno}</td>
-                    <td> 
-                      <span class="badge text-bg-primary">View</span>
-                      <span class="badge text-bg-danger" onClick={()=>deletedata(u.id)}>Del</span>
-                      <span class="badge text-bg-warning">Edit</span>
+    <div className="card mb-3 shadow border">
+      <div className="card-body">
+        <p>
+          Employee List: [ {user.length} ]
+        </p>
 
+        <table className="table">
+          <thead>
+            <tr>
+              <th>sno</th>
+              <th>Email</th>
+              <th>DOB</th>
+              <th>Gender</th>
+              <th>Username</th>
+              <th>Mobile</th>
+              <th>Password</th>
+              <th>Role</th>
+              <th>Profile</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
 
-                    </td>
-                  </tr>
-                    )
-                  })}
-                  
+          <tbody>
+            {user.map((u, index) => {
+              return (
+                <tr key={u._id}>
+                  <th>{index + 1}</th>
+                  <td>{u.emailid}</td>
+                  <td>{u.dob}</td>
+                  <td>{u.gender}</td>
+                  <td>{u.username}</td>
+                  <td>{u.mobileno}</td>
+                  <td>{u.password}</td>
+                  <td>{u.role}</td>
 
-                </tbody>
-              </table>
-            </div>
-          </div>
-  )
+                  <td>
+                    <img
+                      src={u.picture}
+                      width="30"
+                      alt={u.username}
+                    />
+                  </td>
+
+                  <td>
+                    <Link
+                      to={"viewuser/" + u._id}
+                      className="badge text-bg-primary btn"
+                    >
+                      View
+                    </Link>
+
+                    <span
+                      className="badge text-bg-danger btn ms-1"
+                      onClick={() =>
+                        deletedata(u._id)
+                      }
+                    >
+                      Del
+                    </span>
+
+                    <Link
+                      to={"edituser/" + u._id}
+                      className="badge text-bg-warning ms-1 btn"
+                    >
+                      Edit
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  );
 }
 
-export default UserTable
+export default UserTable;
