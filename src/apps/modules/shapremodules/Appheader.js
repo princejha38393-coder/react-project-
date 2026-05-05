@@ -1,11 +1,28 @@
 import React from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Appheader() {
-  const userinfo = JSON.parse(
-    localStorage.getItem("userpass")
-  );
+  const navigate = useNavigate();
 
-  console.log(userinfo);
+  const logoutuser = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8700/logout",
+        {},
+        {
+          withCredentials: true
+        }
+      );
+
+      console.log(response.data);
+
+      navigate("/usermanagement");
+
+    } catch (error) {
+      console.log(error.response?.data);
+    }
+  };
 
   return (
     <header className="p-3 text-bg-dark">
@@ -19,11 +36,50 @@ function Appheader() {
           </a>
 
           <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" className="nav-link px-2 text-secondary">Home</a></li>
-            <li><a href="#" className="nav-link px-2 text-white">Features</a></li>
-            <li><a href="#" className="nav-link px-2 text-white">Pricing</a></li>
-            <li><a href="#" className="nav-link px-2 text-white">FAQs</a></li>
-            <li><a href="#" className="nav-link px-2 text-white">About</a></li>
+            <li>
+              <a
+                href="#"
+                className="nav-link px-2 text-secondary"
+              >
+                Home
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="#"
+                className="nav-link px-2 text-white"
+              >
+                Features
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="#"
+                className="nav-link px-2 text-white"
+              >
+                Pricing
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="#"
+                className="nav-link px-2 text-white"
+              >
+                FAQs
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="#"
+                className="nav-link px-2 text-white"
+              >
+                About
+              </a>
+            </li>
           </ul>
 
           <form
@@ -39,21 +95,37 @@ function Appheader() {
           </form>
 
           <div className="text-end">
+
             <button
               type="button"
               className="btn btn-outline-light me-2"
+              onClick={() =>
+                navigate("/usermanagement")
+              }
             >
               Login
             </button>
 
             <button
               type="button"
-              className="btn btn-warning"
+              className="btn btn-warning me-2"
+              onClick={() =>
+                navigate(
+                  "/usermanagement/register"
+                )
+              }
             >
               Sign-up
             </button>
 
-            <p>{userinfo?.jemail || "No Email"}</p>
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={logoutuser}
+            >
+              Logout
+            </button>
+
           </div>
 
         </div>

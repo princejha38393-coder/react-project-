@@ -1,30 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function UserTable() {
-  const [user, updateuser] = useState([]);
+function UserTable({
+  userlist,
+  getdata
+}) {
+  /* Pagination */
+  const [currentpage, setcurrentpage] =
+    useState(1);
 
-  const getdata = () => {
-    axios
-      .get(
-        "http://localhost:8700/alluserlist",
-        {
-          withCredentials: true
-        }
-      )
-      .then((d) => {
-        console.log(d.data.data);
-        updateuser(d.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const usersperpage = 10;
 
-  useEffect(() => {
-    getdata();
-  }, []);
+  const lastindex =
+    currentpage * usersperpage;
+
+  const firstindex =
+    lastindex - usersperpage;
+
+  const currentusers =
+    userlist.slice(
+      firstindex,
+      lastindex
+    );
+
+  const totalpages = Math.ceil(
+    userlist.length /
+      usersperpage
+  );
 
   const deletedata = (a) => {
     axios
@@ -47,7 +50,8 @@ function UserTable() {
     <div className="card mb-3 shadow border">
       <div className="card-body">
         <p>
-          Employee List: [ {user.length} ]
+          Employee List:
+          [ {userlist.length} ]
         </p>
 
         <table className="table">
@@ -67,56 +71,144 @@ function UserTable() {
           </thead>
 
           <tbody>
-            {user.map((u, index) => {
-              return (
-                <tr key={u._id}>
-                  <th>{index + 1}</th>
-                  <td>{u.emailid}</td>
-                  <td>{u.dob}</td>
-                  <td>{u.gender}</td>
-                  <td>{u.username}</td>
-                  <td>{u.mobileno}</td>
-                  <td>{u.password}</td>
-                  <td>{u.role}</td>
+            {currentusers.map(
+              (u, index) => {
+                return (
+                  <tr key={u._id}>
+                    <th>
+                      {firstindex +
+                        index +
+                        1}
+                    </th>
 
-                  <td>
-                    <img
-                      src={u.picture}
-                      width="30"
-                      alt={u.username}
-                    />
-                  </td>
+                    <td>
+                      {u.emailid}
+                    </td>
 
-                  <td>
-                    <Link
-                      to={"viewuser/" + u._id}
-                      className="badge text-bg-primary btn"
-                    >
-                      View
-                    </Link>
+                    <td>{u.dob}</td>
 
-                    <span
-                      className="badge text-bg-danger btn ms-1"
-                      onClick={() =>
-                        deletedata(u._id)
-                      }
-                    >
-                      Del
-                    </span>
+                    <td>
+                      {u.gender}
+                    </td>
 
-                    <Link
-                      to={"edituser/" + u._id}
-                      className="badge text-bg-warning ms-1 btn"
-                    >
-                      Edit
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
+                    <td>
+                      {u.username}
+                    </td>
+
+                    <td>
+                      {u.mobileno}
+                    </td>
+
+                    <td>
+                      {u.password}
+                    </td>
+
+                    <td>{u.role}</td>
+
+                    <td>
+                      {u.picture ? (
+                        <img
+                          src={
+                            u.picture
+                          }
+                          width="30"
+                          alt={
+                            u.username
+                          }
+                        />
+                      ) : (
+                        "No Image"
+                      )}
+                    </td>
+
+                    <td>
+                      <Link
+                        to={
+                          "viewuser/" +
+                          u._id
+                        }
+                        className="badge text-bg-primary btn"
+                      >
+                        View
+                      </Link>
+
+                      <span
+                        className="badge text-bg-danger btn ms-1"
+                        onClick={() =>
+                          deletedata(
+                            u._id
+                          )
+                        }
+                      >
+                        Del
+                      </span>
+
+                      <Link
+                        to={
+                          "edituser/" +
+                          u._id
+                        }
+                        className="badge text-bg-warning ms-1 btn"
+                      >
+                        Edit
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              }
+            )}
           </tbody>
-
         </table>
+
+        {/* Pagination */}
+        <div className="d-flex gap-2 mt-3">
+
+          <button
+            className="btn btn-secondary"
+            disabled={
+              currentpage === 1
+            }
+            onClick={() =>
+              setcurrentpage(
+                currentpage - 1
+              )
+            }
+          >
+            Prev
+          </button>
+
+          {[...Array(totalpages)].map(
+            (_, i) => (
+              <button
+                key={i}
+                className="btn btn-primary"
+                onClick={() =>
+                  setcurrentpage(
+                    i + 1
+                  )
+                }
+              >
+                {i + 1}
+              </button>
+            )
+          )}
+
+          <button
+            className="btn btn-secondary"
+            disabled={
+              currentpage ===
+              totalpages
+            }
+            onClick={() =>
+              setcurrentpage(
+                currentpage + 1
+              )
+            }
+          >
+            Next
+          </button>
+
+        </div>
       </div>
     </div>
   );

@@ -13,6 +13,8 @@ import {
 
 function Mainpage() {
   const [user, updateuser] = useState([]);
+  const [search, setsearch] =
+    useState("");
 
   const abc = useSelector(
     (state) => state.counter.value
@@ -34,7 +36,8 @@ function Mainpage() {
 
     } catch (error) {
       console.log(
-        error.response?.data || error.message
+        error.response?.data ||
+        error.message
       );
     }
   };
@@ -42,6 +45,16 @@ function Mainpage() {
   useEffect(() => {
     getdata();
   }, []);
+
+  /* Search Filter */
+  const filteredusers =
+    user.filter((u) =>
+      u.username
+        ?.toLowerCase()
+        .includes(
+          search.toLowerCase()
+        )
+    );
 
   return (
     <div className="container-fluid bg-light min-vh-100 p-4">
@@ -58,6 +71,12 @@ function Mainpage() {
             type="text"
             className="form-control border-0"
             placeholder="Search here..."
+            value={search}
+            onChange={(e) =>
+              setsearch(
+                e.target.value
+              )
+            }
           />
         </div>
 
@@ -90,7 +109,9 @@ function Mainpage() {
 
             <button
               className="btn btn-primary rounded-pill mt-3"
-              onClick={() => xyz(increment())}
+              onClick={() =>
+                xyz(increment())
+              }
             >
               Counter {abc}
             </button>
@@ -109,7 +130,9 @@ function Mainpage() {
               {
                 user.filter(
                   (m) =>
-                    m.gender?.toLowerCase() === "male"
+                    m.gender
+                      ?.toLowerCase() ===
+                    "male"
                 ).length
               }
             </h2>
@@ -128,7 +151,9 @@ function Mainpage() {
               {
                 user.filter(
                   (m) =>
-                    m.gender?.toLowerCase() === "female"
+                    m.gender
+                      ?.toLowerCase() ===
+                    "female"
                 ).length
               }
             </h2>
@@ -143,7 +168,9 @@ function Mainpage() {
           All Employees
         </h4>
 
-        <UserTable userlist={user} />
+        <UserTable
+          userlist={filteredusers}
+        />
       </div>
 
     </div>

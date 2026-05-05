@@ -39,6 +39,15 @@ function User_login() {
             theme: 'dark'
           });
 
+          /* Save user data in localStorage */
+          localStorage.setItem(
+            "userpass",
+            JSON.stringify({
+              jemail: login.emailid,
+              role: d.data.role
+            })
+          );
+
           setTimeout(() => {
             if (d.data.role === 'admin') {
               mynav('/admin-dashboard');
@@ -99,7 +108,6 @@ function User_login() {
               Login into your account
             </h3>
 
-            {/* Email */}
             <div className="mb-3 input-group">
               <span className="input-group-text">
                 <MdOutlineEmail />
@@ -115,7 +123,6 @@ function User_login() {
               />
             </div>
 
-            {/* Password */}
             <div className="mb-3 input-group">
               <span className="input-group-text">
                 <TbLockPassword />
@@ -131,7 +138,6 @@ function User_login() {
               />
             </div>
 
-            {/* Role Section */}
             <div className="mb-3">
               <select
                 className="form-select"
@@ -147,11 +153,12 @@ function User_login() {
               </select>
             </div>
 
-            <div className="text-end mb-3">
-              <small className="text-primary">
-                Forgot password?
-              </small>
-            </div>
+            <Link
+              to="/forgot-password"
+              className="text-primary text-decoration-none"
+            >
+              Forgot password?
+            </Link>
 
             <button
               className="btn btn-warning w-100 mb-3 fw-bold"
