@@ -9,18 +9,21 @@ import "./apps/assets/global.css";
 import {
   BrowserRouter,
   Routes,
-  Route
+  Route,
 } from "react-router-dom";
 
-import User_login from "./apps/modules/users/auth/User_login";
-import User_register from "./apps/modules/users/auth/User_register";
-import User_edit from "./apps/modules/users/auth/User_edite";
-import User_view from "./apps/modules/users/auth/User_view";
+// ✅ Correct Component Names
+import UserLogin from "./apps/modules/users/auth/UserLogin";
+import UserRegister from "./apps/modules/users/auth/UserRegister";
+import UserEdit from "./apps/modules/users/auth/UserEdit";
+import UserView from "./apps/modules/users/auth/UserView";
 
 import Profile from "./apps/modules/users/Profile";
 import ForgotPassword from "./apps/modules/users/ForgotPassword";
 import ResetPassword from "./apps/modules/users/ResetPassword";
-import ProtectedRoute from "./apps/modules/users/ProtectedRoute";
+
+// ❌ Remove if not using
+// import ProtectedRoute from "./apps/modules/users/ProtectedRoute";
 
 import Apperror from "./apps/modules/shapremodules/Apperror";
 import Applandingpage from "./apps/modules/dashboard/Applandingpage";
@@ -48,49 +51,49 @@ root.render(
       <BrowserRouter>
         <Routes>
 
-          {/* Welcome Page */}
+          {/* Home */}
           <Route path="/" element={<Welcome />} />
 
           {/* Login Routes */}
           <Route
             path="usermanagement"
-            element={<User_login />}
+            element={<UserLogin />}
           />
 
           <Route
             path="adminmanagement"
-            element={<User_login />}
+            element={<UserLogin />}
           />
 
           <Route
             path="salesmanagement"
-            element={<User_login />}
+            element={<UserLogin />}
           />
 
           <Route
             path="invoicemanagement"
-            element={<User_login />}
+            element={<UserLogin />}
           />
 
-          {/* Register Route */}
+          {/* Register */}
           <Route
             path="usermanagement/register"
-            element={<User_register />}
+            element={<UserRegister />}
           />
 
-          {/* Forgot Password Route */}
+          {/* Forgot Password */}
           <Route
             path="forgot-password"
             element={<ForgotPassword />}
           />
 
-          {/* Reset Password Route */}
+          {/* Reset Password */}
           <Route
             path="reset-password/:token"
             element={<ResetPassword />}
           />
 
-          {/* User Dashboard */}
+          {/* Dashboard */}
           <Route
             path="dashboard"
             element={<Applandingpage />}
@@ -119,12 +122,12 @@ root.render(
 
             <Route
               path="edituser/:id"
-              element={<User_edit />}
+              element={<UserEdit />}
             />
 
             <Route
               path="viewuser/:id"
-              element={<User_view />}
+              element={<UserView />}
             />
 
             <Route
@@ -137,11 +140,7 @@ root.render(
               element={<Mycanander />}
             />
 
-            <Route
-              path="lazypage"
-              element={
-                <Suspense
-                  fallback={
+            <Route th="lazypage"element={<Suspense fallback={
                     <h1 className="myloader">
                       loading Content...
                     </h1>
@@ -177,7 +176,7 @@ root.render(
             <Route path="" element={<Mainpage />} />
           </Route>
 
-          {/* Error Page */}
+          {/* Error */}
           <Route
             path="*"
             element={<Apperror />}

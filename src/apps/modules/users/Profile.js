@@ -1,7 +1,4 @@
-import React, {
-  useEffect,
-  useState
-} from "react";
+import React, { useEffect,useState} from "react";
 import axios from "axios";
 
 function Profile() {
@@ -10,20 +7,12 @@ function Profile() {
 
   const getprofile = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8700/myprofile",
-        {
-          withCredentials: true
-        }
-      );
+      const response = await axios.get("http://localhost:8700/myprofile",{withCredentials: true});
 
       setuserinfo(response.data.user);
 
-    } catch (error) {
-      console.log(
-        error.response?.data
-      );
-    }
+    } 
+    catch (error) {console.log(error.response?.data);}
   };
 
   useEffect(() => {

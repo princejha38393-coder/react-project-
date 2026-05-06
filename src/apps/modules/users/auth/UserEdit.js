@@ -4,31 +4,20 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
-function User_edit() {
+function UserEdit() {
   const mynav = useNavigate();
   const { id } = useParams();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm();
+  const {register,handleSubmit,setValue,formState: { errors },} = useForm();
 
-  // GET SINGLE USER
   const getsingleuser = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:8700/singleuser/${id}`,
-        {
-          withCredentials: true
-        }
-      );
+      const res = await axios.get(`http://localhost:8700/singleuser/${id}`, {withCredentials: true});
 
       const user = res.data?.user || res.data?.data;
 
       if (!user) {
-        toast.error("User data not found ❌");
+        toast.error("User data not found ");
         return;
       }
 
@@ -39,9 +28,8 @@ function User_edit() {
       setValue("gender", user.gender || "");
       setValue("picture", user.picture || "");
 
-    } catch (error) {
-      console.log(error);
-      toast.error("User fetch failed ❌");
+    } catch (error) {console.log(error);
+      toast.error("User fetch failed ");
     }
   };
 
@@ -49,54 +37,35 @@ function User_edit() {
     getsingleuser();
   }, [id]);
 
-  // UPDATE USER
   const formsubmit = async (data) => {
     try {
-      await axios.patch(
-        `http://localhost:8700/edituser/${id}`,
-        data,
-        {
-          withCredentials: true
-        }
-      );
+      await axios.patch(`http://localhost:8700/edituser/${id}`, data,{withCredentials: true});
 
-      toast.success("User Updated Successfully ✅");
-
-      setTimeout(() => {
-        mynav("/usermanagement");
-      }, 1500);
-
-    } catch (error) {
-      console.log(error);
-      toast.error("Update Failed ❌");
+      toast.success("User Updated Successfully ");
+setTimeout(() => {mynav("/usermanagement");}, 1500);} 
+    catch (error) 
+    {console.log(error);
+      toast.error("Update Failed ");
     }
   };
 
-  // DELETE USER
+
   const deleteuser = async () => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this user?"
-    );
+    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
 
     if (!confirmDelete) return;
 
-    try {
-      await axios.delete(
-        `http://localhost:8700/deleteuser/${id}`,
-        {
-          withCredentials: true
-        }
-      );
+    try 
+    {
+      await axios.delete(`http://localhost:8700/deleteuser/${id}`,{withCredentials: true});
 
-      toast.success("User Deleted Successfully 🗑️");
+      toast.success("User Deleted Successfully ");
 
-      setTimeout(() => {
-        mynav("/usermanagement");
-      }, 1500);
+      setTimeout(() => {mynav("/usermanagement");}, 1500);
 
-    } catch (error) {
-      console.log(error);
-      toast.error("Delete Failed ❌");
+    } 
+    catch (error) {console.log(error);
+      toast.error("Delete Failed ");
     }
   };
 
@@ -268,4 +237,4 @@ function User_edit() {
   );
 }
 
-export default User_edit;
+export default UserEdit;

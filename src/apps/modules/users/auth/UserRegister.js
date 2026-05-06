@@ -5,7 +5,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function User_register() {
+function UserRegister() {
   const mynav = useNavigate();
 
   const {
@@ -15,21 +15,12 @@ function User_register() {
 
   const formsubmit = async (d) => {
     try {
-      const r = await axios.post(
-        "http://localhost:8700/userregister",
-        d,
-        {
-          withCredentials: true
-        }
-      );
+      const r = await axios.post("http://localhost:8700/userregister", d, { withCredentials: true });
 
-      if (
-        r.data.mystatus === 420 ||
-        r.data.mystatus === 450
-      ) {
+      if (r.data.mystatus === 420 || r.data.mystatus === 450) {
         toast.error(r.data.msg);
-
-      } else if (r.data.mystatus === 250) {
+      }
+      else if (r.data.mystatus === 250) {
         toast.success(r.data.msg);
 
         setTimeout(() => {
@@ -52,10 +43,7 @@ function User_register() {
 
         <div
           className="row shadow rounded-4 overflow-hidden"
-          style={{
-            width: "90%",
-            maxWidth: "1200px"
-          }}
+          style={{ width: "90%", maxWidth: "1200px" }}
         >
           <div className="col-md-5 bg-white p-5 d-flex flex-column justify-content-center">
             <h1 className="fw-bold">
@@ -187,8 +175,7 @@ function User_register() {
                 </div>
 
                 <div className="col-md-12 text-center mt-4">
-                  <Link
-                    to="/usermanagement"
+                  <Link to="/usermanagement"
                     className="text-decoration-none"
                   >
                     Back to Login
@@ -204,4 +191,4 @@ function User_register() {
   );
 }
 
-export default User_register;
+export default UserRegister;

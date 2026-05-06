@@ -5,7 +5,7 @@ import { TbLockPassword } from 'react-icons/tb';
 import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 
-function User_login() {
+function UserLogin() {
   const mynav = useNavigate();
 
   const [login, updatelogin] = useState({
@@ -24,44 +24,36 @@ function User_login() {
   };
 
   const Myformsubmit = () => {
-    axios
-      .post(
-        'http://localhost:8700/userlogin',
-        login,
+    axios.post('http://localhost:8700/userlogin',login,
         {
           withCredentials: true
         }
       )
       .then((d) => {
-        if (d.data.mystatus === 200) {
-          toast.success(d.data.msg, {
-            position: 'top-left',
-            theme: 'dark'
-          });
+        if (d.data.mystatus === 200) 
+          {toast.success(d.data.msg, {position: 'top-left',theme: 'dark'});
 
-          /* Save user data in localStorage */
-          localStorage.setItem(
-            "userpass",
-            JSON.stringify({
-              jemail: login.emailid,
-              role: d.data.role
-            })
+          localStorage.setItem("userpass",JSON.stringify({jemail: login.emailid,role: d.data.role})
           );
 
           setTimeout(() => {
-            if (d.data.role === 'admin') {
+            if (d.data.role === 'admin')
+            {
               mynav('/admin-dashboard');
             }
 
-            if (d.data.role === 'sales') {
+            if (d.data.role === 'sales')
+            {
               mynav('/sales-dashboard');
             }
 
-            if (d.data.role === 'invoice') {
+            if (d.data.role === 'invoice') 
+            {
               mynav('/invoice-dashboard');
             }
 
-            if (d.data.role === 'user') {
+            if (d.data.role === 'user') 
+            {
               mynav('/dashboard');
             }
           }, 2000);
@@ -70,7 +62,8 @@ function User_login() {
       .catch((error) => {
         console.log(error.response);
 
-        toast.error('Login failed', {
+        toast.error('Login failed', 
+        {
           position: 'top-left',
           theme: 'dark'
         });
@@ -87,11 +80,7 @@ function User_login() {
       >
         <div className="col-md-5 bg-white d-flex flex-column justify-content-center p-5">
           <div className="mb-4">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"
-              alt="logo"
-              width="70"
-            />
+            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"alt="logo"width="70"/>
           </div>
 
           <h1 className="display-2 fw-bold">
@@ -171,8 +160,7 @@ function User_login() {
               OR
             </div>
 
-            <Link
-              to="/usermanagement/register"
+            <Link to="/usermanagement/register"
               className="btn btn-outline-warning w-100 fw-bold"
             >
               Signup now
@@ -184,4 +172,4 @@ function User_login() {
   );
 }
 
-export default User_login;
+export default UserLogin;

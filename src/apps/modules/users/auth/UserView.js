@@ -2,24 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 
-function User_view() {
+function UserView() {
   const { id } = useParams();
   const [user, setUser] = useState({});
 
   const getsingleuser = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:8700/singleuser/${id}`
-      );
+      const res = await axios.get(`http://localhost:8700/singleuser/${id}` );
       setUser(res.data.user);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {console.log(error);}
   };
 
-  useEffect(() => {
-    getsingleuser();
-  }, []);
+  useEffect(() => {getsingleuser();}, []);
 
   return (
     <div className="container mt-5">
@@ -33,16 +27,11 @@ function User_view() {
         <p><b>Mobile:</b> {user.mobileno}</p>
         <p><b>Password:</b> {user.pass}</p>
 
-        <img
-          src={user.picture}
-          alt={user.username}
-          width="120"
-        />
+        <img src={user.picture}alt={user.username}width="120"/>
 
         <br /><br />
 
-        <Link
-          to="/dashboard"
+        <Link to="/dashboard"
           className="btn btn-dark"
         >
           Back
@@ -52,4 +41,4 @@ function User_view() {
   );
 }
 
-export default User_view;
+export default UserView;

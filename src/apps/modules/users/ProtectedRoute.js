@@ -15,7 +15,7 @@ function ProtectedRoute({
       ? JSON.parse(userdata)
       : null;
 
-  /* Login Check */
+
   if (!userinfo) {
     return (
       <Navigate
@@ -24,7 +24,7 @@ function ProtectedRoute({
     );
   }
 
-  /* Role Check */
+ 
   if (
     userinfo.role !== role
   ) {

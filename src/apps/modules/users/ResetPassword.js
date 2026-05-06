@@ -35,28 +35,15 @@ function ResetPassword() {
 
     try {
       const response =
-        await axios.post(
-          `http://localhost:8700/reset-password/${token}`,
-          {
-            password
-          }
-        );
+        await axios.post(`http://localhost:8700/reset-password/${token}`,{password});
 
-      toast.success(
-        response.data.msg
-      );
+      toast.success(response.data.msg);
 
       setTimeout(() => {
-        navigate(
-          "/usermanagement"
-        );
-      }, 2000);
+        navigate("/usermanagement");}, 2000);
 
-    } catch (error) {
-      toast.error(
-        error.response?.data?.msg
-      );
-    }
+    } 
+    catch (error) {toast.error(error.response?.data?.msg);}
   };
 
   return (
