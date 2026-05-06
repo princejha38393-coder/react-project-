@@ -8,12 +8,22 @@ function UserView() {
 
   const getsingleuser = async () => {
     try {
-      const res = await axios.get(`http://localhost:8700/singleuser/${id}` );
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/singleuser/${id}`,
+        {
+          withCredentials: true
+        }
+      );
+
       setUser(res.data.user);
-    } catch (error) {console.log(error);}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  useEffect(() => {getsingleuser();}, []);
+  useEffect(() => {
+    getsingleuser();
+  }, [id]);
 
   return (
     <div className="container mt-5">
@@ -27,11 +37,16 @@ function UserView() {
         <p><b>Mobile:</b> {user.mobileno}</p>
         <p><b>Password:</b> {user.pass}</p>
 
-        <img src={user.picture}alt={user.username}width="120"/>
+        <img
+          src={user.picture}
+          alt={user.username}
+          width="120"
+        />
 
         <br /><br />
 
-        <Link to="/dashboard"
+        <Link
+          to="/dashboard"
           className="btn btn-dark"
         >
           Back

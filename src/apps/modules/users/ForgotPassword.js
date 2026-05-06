@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { toast,
+import {
+  toast,
   ToastContainer
 } from "react-toastify";
 
@@ -11,14 +12,32 @@ function ForgotPassword() {
   const handlesubmit = async () => {
     try {
       const response =
-        await axios.post("http://localhost:8700/forgot-password",{emailid});
+        await axios.post(
+          `${process.env.REACT_APP_API_URL}/forgot-password`,
+          { emailid }
+        );
 
-       toast.success(response.data.msg,{position: "top-left",theme: "dark"});
+      toast.success(
+        response.data.msg,
+        {
+          position: "top-left",
+          theme: "dark"
+        }
+      );
 
-       setemailid("");
+      setemailid("");
 
-    } catch (error)
-     { toast.error(error.response?.data?.msg ||"Something went wrong",{position: "top-left",theme: "dark"});}};
+    } catch (error) {
+      toast.error(
+        error.response?.data?.msg ||
+        "Something went wrong",
+        {
+          position: "top-left",
+          theme: "dark"
+        }
+      );
+    }
+  };
 
   return (
     <div className="container mt-5">
@@ -35,7 +54,10 @@ function ForgotPassword() {
           className="form-control mt-3"
           placeholder="Enter your email"
           value={emailid}
-          onChange={(e) =>setemailid(e.target.value)}/>
+          onChange={(e) =>
+            setemailid(e.target.value)
+          }
+        />
 
         <button
           className="btn btn-primary mt-3"

@@ -8,16 +8,26 @@ function UserEdit() {
   const mynav = useNavigate();
   const { id } = useParams();
 
-  const {register,handleSubmit,setValue,formState: { errors },} = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
   const getsingleuser = async () => {
     try {
-      const res = await axios.get(`http://localhost:8700/singleuser/${id}`, {withCredentials: true});
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/singleuser/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
 
       const user = res.data?.user || res.data?.data;
 
       if (!user) {
-        toast.error("User data not found ");
+        toast.error("User data not found");
         return;
       }
 
@@ -27,9 +37,9 @@ function UserEdit() {
       setValue("mobileno", user.mobileno || "");
       setValue("gender", user.gender || "");
       setValue("picture", user.picture || "");
-
-    } catch (error) {console.log(error);
-      toast.error("User fetch failed ");
+    } catch (error) {
+      console.log(error);
+      toast.error("User fetch failed");
     }
   };
 
@@ -39,33 +49,48 @@ function UserEdit() {
 
   const formsubmit = async (data) => {
     try {
-      await axios.patch(`http://localhost:8700/edituser/${id}`, data,{withCredentials: true});
+      await axios.patch(
+        `${process.env.REACT_APP_API_URL}/edituser/${id}`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
 
-      toast.success("User Updated Successfully ");
-setTimeout(() => {mynav("/usermanagement");}, 1500);} 
-    catch (error) 
-    {console.log(error);
-      toast.error("Update Failed ");
+      toast.success("User Updated Successfully");
+
+      setTimeout(() => {
+        mynav("/usermanagement");
+      }, 1500);
+    } catch (error) {
+      console.log(error);
+      toast.error("Update Failed");
     }
   };
 
-
   const deleteuser = async () => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this user?"
+    );
 
     if (!confirmDelete) return;
 
-    try 
-    {
-      await axios.delete(`http://localhost:8700/deleteuser/${id}`,{withCredentials: true});
+    try {
+      await axios.delete(
+        `${process.env.REACT_APP_API_URL}/deleteuser/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
 
-      toast.success("User Deleted Successfully ");
+      toast.success("User Deleted Successfully");
 
-      setTimeout(() => {mynav("/usermanagement");}, 1500);
-
-    } 
-    catch (error) {console.log(error);
-      toast.error("Delete Failed ");
+      setTimeout(() => {
+        mynav("/usermanagement");
+      }, 1500);
+    } catch (error) {
+      console.log(error);
+      toast.error("Delete Failed");
     }
   };
 
@@ -76,7 +101,6 @@ setTimeout(() => {mynav("/usermanagement");}, 1500);}
           <div className="col-md-7 bg-light shadow p-3">
             <div className="container">
               <div className="row">
-
                 <div className="col-12 text-center">
                   <p className="h2 mt-3 mb-5">
                     Edit User Details
@@ -93,7 +117,7 @@ setTimeout(() => {mynav("/usermanagement");}, 1500);}
                       type="email"
                       className="form-control"
                       {...register("emailid", {
-                        required: true
+                        required: true,
                       })}
                     />
                     {errors.emailid && (
@@ -113,7 +137,7 @@ setTimeout(() => {mynav("/usermanagement");}, 1500);}
                       type="text"
                       className="form-control"
                       {...register("username", {
-                        required: true
+                        required: true,
                       })}
                     />
                     {errors.username && (
@@ -192,7 +216,7 @@ setTimeout(() => {mynav("/usermanagement");}, 1500);}
                       type="password"
                       className="form-control"
                       {...register("pass", {
-                        minLength: 5
+                        minLength: 5,
                       })}
                     />
                     {errors.pass?.type === "minLength" && (

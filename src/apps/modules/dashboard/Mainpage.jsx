@@ -25,7 +25,7 @@ function Mainpage() {
   const getdata = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8700/alluserlist",
+        `${process.env.REACT_APP_API_URL}/alluserlist`,
         {
           withCredentials: true
         }

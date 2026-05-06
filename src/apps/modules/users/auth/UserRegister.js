@@ -15,19 +15,23 @@ function UserRegister() {
 
   const formsubmit = async (d) => {
     try {
-      const r = await axios.post("http://localhost:8700/userregister", d, { withCredentials: true });
+      const r = await axios.post(
+        `${process.env.REACT_APP_API_URL}/userregister`,
+        d,
+        {
+          withCredentials: true
+        }
+      );
 
       if (r.data.mystatus === 420 || r.data.mystatus === 450) {
         toast.error(r.data.msg);
-      }
-      else if (r.data.mystatus === 250) {
+      } else if (r.data.mystatus === 250) {
         toast.success(r.data.msg);
 
         setTimeout(() => {
           mynav("/usermanagement");
         }, 2000);
       }
-
     } catch (error) {
       toast.error("Server Error");
     }
@@ -139,18 +143,10 @@ function UserRegister() {
                     <option value="">
                       Select Role
                     </option>
-                    <option value="user">
-                      User
-                    </option>
-                    <option value="admin">
-                      Admin
-                    </option>
-                    <option value="sales">
-                      Sales
-                    </option>
-                    <option value="invoice">
-                      Invoice
-                    </option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                    <option value="sales">Sales</option>
+                    <option value="invoice">Invoice</option>
                   </select>
                 </div>
 
@@ -175,7 +171,8 @@ function UserRegister() {
                 </div>
 
                 <div className="col-md-12 text-center mt-4">
-                  <Link to="/usermanagement"
+                  <Link
+                    to="/usermanagement"
                     className="text-decoration-none"
                   >
                     Back to Login
