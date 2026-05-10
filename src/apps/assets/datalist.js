@@ -1,32 +1,32 @@
 export const myapplist = [
   {
-    appname:"user management",
-    appicon:"",
-    approuting:"usermanagement",
-    appthems:"bg-light"
+    appname: "User Management",
+    appicon: "👤",
+    approuting: "usermanagement",
+    appthems: "bg-primary"
   },
   {
-    appname:"Admin management",
-    appicon:"",
-    approuting:"adminmanagement",
-    appthems:"bg-light"
+    appname: "Admin Management",
+    appicon: "🛠️",
+    approuting: "adminmanagement",
+    appthems: "bg-success"
   },
   {
-    appname:"Invoice management",
-    appicon:"",
-    approuting:"invlicemanagement",
-    appthems:"bg-info"
+    appname: "Invoice Management",
+    appicon: "📄",
+    approuting: "invoicemanagement",
+    appthems: "bg-info"
   },
   {
-    appname:"Dashboard",
-    appicon:"",
-    approuting:"dashboard",
-    appthems:"bg-warning"
+    appname: "Dashboard",
+    appicon: "📊",
+    approuting: "dashboard",
+    appthems: "bg-warning"
   },
   {
-    appname:"Sales management",
-    appicon:"",
-    approuting:"salesmanagement",
-    appthems:"bg-danger"
+    appname: "Sales Management",
+    appicon: "💰",
+    approuting: "salesmanagement",
+    appthems: "bg-danger"
   }
 ];

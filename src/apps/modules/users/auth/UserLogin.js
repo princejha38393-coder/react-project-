@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { MdOutlineEmail } from 'react-icons/md';
-import { TbLockPassword } from 'react-icons/tb';
-import { toast, ToastContainer } from 'react-toastify';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { MdOutlineEmail } from "react-icons/md";
+import { TbLockPassword } from "react-icons/tb";
+import { toast, ToastContainer } from "react-toastify";
+import { motion } from "framer-motion";
+import axios from "axios";
 
 function UserLogin() {
   const mynav = useNavigate();
 
   const [login, updatelogin] = useState({
-    emailid: '',
-    password: '',
-    role: ''
+    emailid: "",
+    password: "",
+    role: "",
   });
 
   const updatelogininfo = (d) => {
@@ -19,49 +20,45 @@ function UserLogin() {
 
     updatelogin((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const Myformsubmit = () => {
     axios
-      .post(
-        `${process.env.REACT_APP_API_URL}/userlogin`,
-        login,
-        {
-          withCredentials: true
-        }
-      )
+      .post(`${process.env.REACT_APP_API_URL}/userlogin`, login, {
+        withCredentials: true,
+      })
       .then((d) => {
         if (d.data.mystatus === 200) {
           toast.success(d.data.msg, {
-            position: 'top-left',
-            theme: 'dark'
+            position: "top-left",
+            theme: "dark",
           });
 
           localStorage.setItem(
             "userpass",
             JSON.stringify({
               jemail: login.emailid,
-              role: d.data.role
+              role: d.data.role,
             })
           );
 
           setTimeout(() => {
-            if (d.data.role === 'admin') {
-              mynav('/admin-dashboard');
+            if (d.data.role === "admin") {
+              mynav("/admin-dashboard");
             }
 
-            if (d.data.role === 'sales') {
-              mynav('/sales-dashboard');
+            if (d.data.role === "sales") {
+              mynav("/sales-dashboard");
             }
 
-            if (d.data.role === 'invoice') {
-              mynav('/invoice-dashboard');
+            if (d.data.role === "invoice") {
+              mynav("/invoice-dashboard");
             }
 
-            if (d.data.role === 'user') {
-              mynav('/dashboard');
+            if (d.data.role === "user") {
+              mynav("/dashboard");
             }
           }, 2000);
         }
@@ -69,9 +66,9 @@ function UserLogin() {
       .catch((error) => {
         console.log(error.response);
 
-        toast.error('Login failed', {
-          position: 'top-left',
-          theme: 'dark'
+        toast.error("Login failed", {
+          position: "top-left",
+          theme: "dark",
         });
       });
   };
@@ -82,31 +79,34 @@ function UserLogin() {
 
       <div
         className="row w-100 shadow-lg rounded-4 overflow-hidden"
-        style={{ maxWidth: '1100px' }}
+        style={{ maxWidth: "1100px" }}
       >
-        <div className="col-md-5 bg-white d-flex flex-column justify-content-center p-5">
-          <div className="mb-4">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"
-              alt="logo"
-              width="70"
-            />
-          </div>
-
+        {/* Left Side */}
+        <motion.div
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="col-md-6 bg-white d-flex align-items-center justify-content-center p-5"
+        >
           <h1 className="display-2 fw-bold">
-            Login <br /> Screen
+            Login Screen
           </h1>
-        </div>
+        </motion.div>
 
-        <div className="col-md-7 position-relative bg-warning p-5 d-flex align-items-center justify-content-center">
-          <div
+        {/* Right Side */}
+        <div className="col-md-6 bg-warning d-flex align-items-center justify-content-center p-4">
+          <motion.div
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
             className="bg-white rounded-4 shadow-lg p-5 w-100"
-            style={{ maxWidth: '500px' }}
+            style={{ maxWidth: "500px" }}
           >
-            <h3 className="fw-bold mb-4">
-              Login into your account
-            </h3>
+            <h2 className="fw-bold mb-4 text-center">
+              Login your account
+            </h2>
 
+            {/* Email */}
             <div className="mb-3 input-group">
               <span className="input-group-text">
                 <MdOutlineEmail />
@@ -115,13 +115,14 @@ function UserLogin() {
               <input
                 type="email"
                 className="form-control"
-                placeholder="Email address"
+                placeholder="Email"
+                name="emailid"
                 value={login.emailid}
                 onChange={updatelogininfo}
-                name="emailid"
               />
             </div>
 
+            {/* Password */}
             <div className="mb-3 input-group">
               <span className="input-group-text">
                 <TbLockPassword />
@@ -131,52 +132,56 @@ function UserLogin() {
                 type="password"
                 className="form-control"
                 placeholder="Password"
+                name="password"
                 value={login.password}
                 onChange={updatelogininfo}
-                name="password"
               />
             </div>
 
+            {/* Role */}
+            <select
+              name="role"
+              value={login.role}
+              onChange={updatelogininfo}
+              className="form-select mb-3"
+            >
+              <option value="">Select Role</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+              <option value="sales">Sales</option>
+              <option value="invoice">Invoice</option>
+            </select>
+
+            {/* Forgot Password */}
             <div className="mb-3">
-              <select
-                className="form-select"
-                name="role"
-                value={login.role}
-                onChange={updatelogininfo}
+              <Link
+                to="/forgot-password"
+                className="text-decoration-none"
               >
-                <option value="">Select Role</option>
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-                <option value="sales">Sales</option>
-                <option value="invoice">Invoice</option>
-              </select>
+                Forgot Password?
+              </Link>
             </div>
 
-            <Link
-              to="/forgot-password"
-              className="text-primary text-decoration-none"
-            >
-              Forgot password?
-            </Link>
-
-            <button
-              className="btn btn-warning w-100 mb-3 fw-bold"
+            {/* Login Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="btn btn-warning w-100 fw-bold"
               onClick={Myformsubmit}
             >
               Login now
-            </button>
+            </motion.button>
 
-            <div className="text-center mb-3">
-              OR
+            {/* Register Link */}
+            <div className="text-center mt-4">
+              <Link
+                to="/usermanagement/register"
+                className="text-decoration-none"
+              >
+                Back to Register
+              </Link>
             </div>
-
-            <Link
-              to="/usermanagement/register"
-              className="btn btn-outline-warning w-100 fw-bold"
-            >
-              Signup now
-            </Link>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

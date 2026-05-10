@@ -3,15 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { motion } from "framer-motion";
 import "react-toastify/dist/ReactToastify.css";
 
 function UserRegister() {
   const mynav = useNavigate();
 
-  const {
-    register,
-    handleSubmit
-  } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const formsubmit = async (d) => {
     try {
@@ -39,31 +37,35 @@ function UserRegister() {
 
   return (
     <form onSubmit={handleSubmit(formsubmit)}>
-      <div
-        className="container-fluid min-vh-100 d-flex justify-content-center align-items-center"
-        style={{ background: "#efefef" }}
-      >
+      <div className="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light">
         <ToastContainer />
 
         <div
-          className="row shadow rounded-4 overflow-hidden"
-          style={{ width: "90%", maxWidth: "1200px" }}
+          className="row w-100 shadow-lg rounded-4 overflow-hidden"
+          style={{ maxWidth: "1100px" }}
         >
-          <div className="col-md-5 bg-white p-5 d-flex flex-column justify-content-center">
-            <h1 className="fw-bold">
+          {/* Left Side Animation */}
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="col-md-6 bg-white d-flex align-items-center justify-content-center p-5"
+          >
+            <h1 className="display-2 fw-bold">
               Register Screen
             </h1>
-          </div>
+          </motion.div>
 
-          <div
-            className="col-md-7 d-flex align-items-center justify-content-center"
-            style={{ background: "#fbbc04" }}
-          >
-            <div
-              className="bg-white p-5 rounded-4 shadow"
-              style={{ width: "85%" }}
+          {/* Right Side Animation */}
+          <div className="col-md-6 bg-warning d-flex align-items-center justify-content-center p-4">
+            <motion.div
+              initial={{ x: 100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="bg-white rounded-4 shadow-lg p-5 w-100"
+              style={{ maxWidth: "500px" }}
             >
-              <h2 className="fw-bold mb-4">
+              <h2 className="fw-bold mb-4 text-center">
                 Create your account
               </h2>
 
@@ -159,15 +161,15 @@ function UserRegister() {
                   />
                 </div>
 
+                {/* Animated Register Button */}
                 <div className="col-md-12">
-                  <button
-                    className="btn w-100 fw-bold"
-                    style={{
-                      background: "#fbbc04"
-                    }}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="btn btn-warning w-100 fw-bold"
                   >
                     Register now
-                  </button>
+                  </motion.button>
                 </div>
 
                 <div className="col-md-12 text-center mt-4">
@@ -180,7 +182,7 @@ function UserRegister() {
                 </div>
 
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
