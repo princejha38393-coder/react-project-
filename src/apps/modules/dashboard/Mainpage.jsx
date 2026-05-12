@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Graphpage from "./Graphpage";
 import UserTable from "./UserTable";
 import { useSelector, useDispatch } from "react-redux";
 import { increment } from "../reduxpage/Myfunctions";
@@ -161,6 +162,10 @@ function Mainpage() {
         </div>
 
       </div>
+      {/* GRAPH */}
+      <div className="mb-4">
+        <Graphpage />
+      </div>
 
       {/* Table */}
       <div className="card border-0 shadow rounded-4 p-4">
@@ -172,6 +177,7 @@ function Mainpage() {
           userlist={filteredusers}
         />
       </div>
+
 
     </div>
   );
