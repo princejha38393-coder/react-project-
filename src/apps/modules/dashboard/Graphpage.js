@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+
 import {
   BarChart,
   Bar,
@@ -11,95 +12,150 @@ import {
   ResponsiveContainer
 } from "recharts";
 
-const data = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000
-  }
-];
-
 function Graphpage() {
-  return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-12 bg-dark g-0 p-3">
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
 
-              <Bar dataKey="uv" fill="#d88484" />
-              <Bar dataKey="pv" fill="#ff0000" />
-              <Bar dataKey="amt" fill="#bd3535" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-    </div>
-  );
-}
+  // STATE
+  const [data, setData] = useState([]);
 
-export default Graphpage;
+  // API CALL
+  const getAnalytics = () => {
 
-export function Mycustomgraph() {
-  const [dt, updt] = useState([]);
+    axios
+      .get("http://localhost:8700/analytics")
 
-  const mydata = () => {
-    axios.get("http://localhost:8700/sales")
-      .then((d) => {
-        updt(d.data);
-        console.log(d.data);
+      .then((res) => {
+        setData(res.data);
       })
+
       .catch((err) => {
         console.log(err);
       });
   };
 
+  // USE EFFECT
   useEffect(() => {
-    mydata();
+    getAnalytics();
   }, []);
 
-  return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-12 bg-dark g-0 p-3">
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={dt}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="title" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
+  // TOTAL MEMBERS
+  const totalMembers =
+    data.reduce((sum, item) => sum + item.total, 0);
 
-              <Bar dataKey="price" fill="#d88484" />
-              <Bar dataKey="discount" fill="#00cdf1" />
-            </BarChart>
-          </ResponsiveContainer>
+  return (
+    <div className="container-fluid mt-4">
+
+      {/* TOP CARDS */}
+
+      <div className="row mb-4">
+
+        <div className="col-sm-3">
+          <div className="card bg-primary text-white border-0 shadow-lg p-4 rounded-4">
+
+            <h5>Total Users</h5>
+
+            <h2>
+              {data.find((d) => d.name === "Users")?.total || 0}
+            </h2>
+
+          </div>
         </div>
+
+        <div className="col-sm-3">
+          <div className="card bg-success text-white border-0 shadow-lg p-4 rounded-4">
+
+            <h5>Total Admins</h5>
+
+            <h2>
+              {data.find((d) => d.name === "Admins")?.total || 0}
+            </h2>
+
+          </div>
+        </div>
+
+        <div className="col-sm-3">
+          <div className="card bg-danger text-white border-0 shadow-lg p-4 rounded-4">
+
+            <h5>Total Sales</h5>
+
+            <h2>
+              {data.find((d) => d.name === "Sales")?.total || 0}
+            </h2>
+
+          </div>
+        </div>
+
+        <div className="col-sm-3">
+          <div className="card bg-warning text-dark border-0 shadow-lg p-4 rounded-4">
+
+            <h5>Total Invoices</h5>
+
+            <h2>
+              {data.find((d) => d.name === "Invoices")?.total || 0}
+            </h2>
+
+          </div>
+        </div>
+
       </div>
+
+      {/* MAIN GRAPH */}
+
+      <div className="row">
+
+        <div className="col-12">
+
+          <div className="card bg-dark border-0 shadow-lg rounded-4 p-4">
+
+            <div className="d-flex justify-content-between align-items-center mb-4">
+
+              <h3 className="text-white">
+                Website Analytics
+              </h3>
+
+              <h5 className="text-info">
+                Total Members : {totalMembers}
+              </h5>
+
+            </div>
+
+            <ResponsiveContainer width="100%" height={450}>
+
+              <BarChart data={data}>
+
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="#555"
+                />
+
+                <XAxis
+                  dataKey="name"
+                  stroke="#fff"
+                />
+
+                <YAxis stroke="#fff" />
+
+                <Tooltip />
+
+                <Legend />
+
+                <Bar
+                  dataKey="total"
+                  fill="#00c6ff"
+                  radius={[10, 10, 0, 0]}
+                />
+
+              </BarChart>
+
+            </ResponsiveContainer>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
   );
 }
+
+export default Graphpage;
